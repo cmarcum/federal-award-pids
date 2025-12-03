@@ -1,1 +1,241 @@
-<StrategicPlan xmlns='http://stratml.net/StratML'><Header><Title>Strategic Plan</Title></Header></StrategicPlan>
+<?xml version="1.0" encoding="UTF-8"?>
+<StrategicPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="http://stratml.net/StratML"
+               xsi:schemaLocation="http://stratml.net/StratML StratMLPart1.xsd">
+
+  <Header>
+    <Identifier>urn:uuid:fed-rd-award-pid-plan-1.0</Identifier>
+    <Title>Federal R&amp;D Award Persistent Identifier System Strategic Plan</Title>
+    <Version>1.0</Version>
+    <Description>Strategy to implement Section 4 of the 2022 OSTP Public Access Memo requiring persistent digital identifiers for all federal R&amp;D awards via a unified website and database serving as the authoritative PID resolver.</Description>
+    <Date>2025-12-01</Date>
+    <Publisher>National Science and Technology Council (NSTC) Subcommittee on Open Science</Publisher>
+  </Header>
+
+  <Organization>
+    <Name>General Services Administration (GSA)</Name>
+    <Description>Lead implementing agency responsible for operating the unified federal R&amp;D award PID system.</Description>
+  </Organization>
+
+  <Vision>
+    A transparent, interoperable, and trusted national system in which every federally funded R&amp;D award
+    is linked to a single, globally unique, persistent, machine-resolvable, and machine-processable URL
+    connecting federal investments to researchers, institutions, outputs, and impacts.
+  </Vision>
+
+  <Mission>
+    To develop and operate a government-wide, publicly accessible platform that aggregates authoritative
+    information on all extramural and intramural federal R&amp;D awards, harmonizes metadata across agency
+    systems, and assigns each award a universal persistent identifier (PID) in the form of a stable, resolvable URL.
+  </Mission>
+
+  <Values>
+    <Value>Interoperability</Value>
+    <Value>Transparency</Value>
+    <Value>Persistence</Value>
+    <Value>Efficiency</Value>
+    <Value>Scalability</Value>
+    <Value>Equity &amp; Public Trust</Value>
+  </Values>
+
+  <Stakeholders>
+    <Stakeholder><Name>Federal R&amp;D Funding Agencies</Name></Stakeholder>
+    <Stakeholder><Name>General Services Administration (GSA)</Name></Stakeholder>
+    <Stakeholder><Name>Office of Management and Budget (OMB)</Name></Stakeholder>
+    <Stakeholder><Name>Office of Science and Technology Policy (OSTP)</Name></Stakeholder>
+    <Stakeholder><Name>Researchers</Name></Stakeholder>
+    <Stakeholder><Name>Research Institutions</Name></Stakeholder>
+    <Stakeholder><Name>Publishers and Repositories</Name></Stakeholder>
+    <Stakeholder><Name>Public and Civil Society</Name></Stakeholder>
+    <Stakeholder><Name>PID Providers (ORCID, ROR, DataCite, Crossref)</Name></Stakeholder>
+  </Stakeholders>
+
+  <!-- GOAL 1 -->
+  <Goals>
+    <Goal>
+      <Identifier>G1</Identifier>
+      <Name>Establish a Single, Unified Federal R&amp;D Award Database</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G1-O1</Identifier>
+          <Name>Build a centralized website and data platform</Name>
+          <Description>Aggregate authoritative award data from USASpending, agency systems, and intramural sources into a unified database.</Description>
+          <PerformanceIndicators>
+            <PerformanceIndicator>System architecture published within 6 months.</PerformanceIndicator>
+            <PerformanceIndicator>100% of covered agencies connected via standardized ingest APIs.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G1-O2</Identifier>
+          <Name>Harmonize metadata schemas</Name>
+          <Description>Develop a unified Federal Award Metadata Standard aligned with PID interoperability requirements.</Description>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Metadata standard approved by the NSTC Subcommittee on Open Science.</PerformanceIndicator>
+            <PerformanceIndicator>95% of ingested awards include required core metadata fields.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 2 -->
+    <Goal>
+      <Identifier>G2</Identifier>
+      <Name>Assign a Unique, Persistent URL-Based PID to Every R&amp;D Award</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G2-O1</Identifier>
+          <Name>Generate persistent URL PIDs automatically</Name>
+          <Description>Issue stable URLs such as https://awards.gov/award/{UUID} for all awards.</Description>
+          <PerformanceIndicators>
+            <PerformanceIndicator>100% of new awards receive a PID at time of publication.</PerformanceIndicator>
+            <PerformanceIndicator>All legacy awards (2008–present) assigned PIDs within 24 months.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G2-O2</Identifier>
+          <Name>Ensure long-term persistence and resolvability</Name>
+          <Description>Maintain resolver infrastructure independent of agency-specific numbering systems.</Description>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Resolver uptime ≥ 99.9%.</PerformanceIndicator>
+            <PerformanceIndicator>No PID ever reissued or deleted.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 3 -->
+    <Goal>
+      <Identifier>G3</Identifier>
+      <Name>Integrate PIDs for People, Organizations, and Research Outputs</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G3-O1</Identifier>
+          <Name>Associate award metadata with ORCID iDs</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>≥ 70% of awards include at least one verified ORCID iD.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G3-O2</Identifier>
+          <Name>Integrate ROR identifiers for institutions</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>≥ 90% match rate for institution affiliations.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G3-O3</Identifier>
+          <Name>Link award PIDs to research outputs (DOIs, PMIDs, datasets)</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Research output auto-linking operational within 12 months.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 4 -->
+    <Goal>
+      <Identifier>G4</Identifier>
+      <Name>Provide a Public, Machine-Actionable PID Resolver Service</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G4-O1</Identifier>
+          <Name>Implement landing pages with structured metadata</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Schema.org compliance validated quarterly.</PerformanceIndicator>
+            <PerformanceIndicator>Landing page load time &lt; 1.5 seconds.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G4-O2</Identifier>
+          <Name>Provide an open API</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>REST and GraphQL API deployed within 12 months.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 5 -->
+    <Goal>
+      <Identifier>G5</Identifier>
+      <Name>Support Subaward and Hierarchical Award Modeling</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G5-O1</Identifier>
+          <Name>Reference subawards by parent award PID</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>100% of subawards include parent_award_pid.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G5-O2</Identifier>
+          <Name>Support multi-funder relationships</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Metadata schema for multi-agency funding deployed in Year 2.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 6 -->
+    <Goal>
+      <Identifier>G6</Identifier>
+      <Name>Ensure Policy Compliance and Governance</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G6-O1</Identifier>
+          <Name>Issue OMB-approved guidance establishing the PID system as authoritative</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>OMB memo issued within 12 months.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G6-O2</Identifier>
+          <Name>Establish interagency governance</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Steering group charter finalized and published.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+    <!-- GOAL 7 -->
+    <Goal>
+      <Identifier>G7</Identifier>
+      <Name>Reduce Costs and Avoid Redundant PID Infrastructure</Name>
+
+      <Objectives>
+        <Objective>
+          <Identifier>G7-O1</Identifier>
+          <Name>Use low-cost URL-based PIDs rather than DOI minting for every award</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>PID cost per award &lt; $0.001.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+
+        <Objective>
+          <Identifier>G7-O2</Identifier>
+          <Name>Eliminate duplicative agency PID systems</Name>
+          <PerformanceIndicators>
+            <PerformanceIndicator>Measured reduction in duplicative DOI assignment.</PerformanceIndicator>
+          </PerformanceIndicators>
+        </Objective>
+      </Objectives>
+    </Goal>
+
+  </Goals>
+
+</StrategicPlan>
