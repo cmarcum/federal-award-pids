@@ -224,5 +224,93 @@
     </xsl:if>
 
   </xsl:template>
+    <!-- ========================================================= -->
+    <!--  AUTOMATIC URL LINKIFIER (SAFE, TABLE-FRIENDLY VERSION)   -->
+    <!-- ========================================================= -->
+    
+    <!-- Intercept all text nodes -->
+    <xsl:template match="text()">
+      <xsl:call-template name="make-links">
+        <xsl:with-param name="text" select="." />
+      </xsl:call-template>
+    </xsl:template>
+    
+    <!-- Make URLs clickable -->
+    <xsl:template name="make-links">
+      <xsl:param name="text"/>
+    
+      <!-- Detect either protocol -->
+      <xsl:choose>
+    
+        <!-- CASE 1: No URLs found -->
+        <xsl:when test="not(contains($text,'http://')) and not(contains($text,'https://'))">
+          <xsl:value-of select="$text"/>
+        </xsl:when>
+    
+        <!-- CASE 2: A URL exists -->
+        <xsl:otherwise>
+    
+          <!-- Find earliest URL type -->
+          <xsl:variable name="pos-http"  select="string-length(substring-before($text,'http://')) + 1"/>
+          <xsl:variable name="pos-https" select="string-length(substring-before($text,'https://')) + 1"/>
+    
+          <!-- Pick the earliest -->
+          <xsl:variable name="pos">
+            <xsl:choose>
+              <xsl:when test="contains($text,'http://') and not(contains($text,'https://'))">
+                <xsl:value-of select="$pos-http"/>
+              </xsl:when>
+              <xsl:when test="contains($text,'https://') and not(contains($text,'http://'))">
+                <xsl:value-of select="$pos-https"/>
+              </xsl:when>
+              <xsl:when test="$pos-http &lt; $pos-https">
+                <xsl:value-of select="$pos-http"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="$pos-https"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+    
+          <!-- Output text before URL -->
+          <xsl:value-of select="substring($text,1,$pos - 1)"/>
+    
+          <!-- Remaining substring beginning with URL -->
+          <xsl:variable name="rest" select="substring($text,$pos)"/>
+    
+          <!-- Extract URL token (until next space) -->
+          <xsl:variable name="url">
+            <xsl:choose>
+              <xsl:when test="contains($rest,' ')">
+                <xsl:value-of select="substring-before($rest,' ')"/>
+              </xsl:when>
+              <xsl:otherwise><xsl:value-of select="$rest"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+    
+          <!-- Output clickable URL -->
+          <a href="{$url}" target="_blank" rel="noopener noreferrer">
+            <xsl:value-of select="$url"/>
+          </a>
+    
+          <!-- After the URL -->
+          <xsl:variable name="after">
+            <xsl:choose>
+              <xsl:when test="contains($rest,' ')">
+                <xsl:value-of select="substring-after($rest,' ')"/>
+              </xsl:when>
+              <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+    
+          <!-- Process the remaining text (one more pass only) -->
+          <xsl:call-template name="make-links">
+            <xsl:with-param name="text" select="$after"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+    
+      </xsl:choose>
+    </xsl:template>
+
 
 </xsl:stylesheet>
