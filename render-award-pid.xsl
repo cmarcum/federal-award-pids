@@ -6,50 +6,19 @@
     xmlns:dd="http://awards.gov/schema/datadictionary"
     exclude-result-prefixes="stratml dd">
 
-  <!-- Output HTML -->
-  <xsl:output method="html" indent="yes" encoding="UTF-8"/>
+  <xsl:output method="html" encoding="UTF-8" indent="yes"/>
 
-  <!-- Root template -->
+  <!-- ========================================================= -->
+  <!-- Root template that renders the base page                  -->
+  <!-- ========================================================= -->
+    
   <xsl:template match="/">
     <html>
       <head>
-        <title>PID System XML Rendering</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #fafafa;
-          }
-          h1, h2, h3 {
-            color: #003366;
-            font-family: Georgia, serif;
-          }
-          table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 25px;
-            background: white;
-          }
-          th, td {
-            border: 1px solid #999;
-            padding: 8px 10px;
-          }
-          th {
-            background: #003366;
-            color: #fff;
-            text-align: left;
-          }
-          .section {
-            margin: 30px 0;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid #ccc;
-          }
-        </style>
+        <title>Federal Award PID System</title>
       </head>
       <body>
 
-        <!-- Document Type Switch -->
         <xsl:choose>
           <xsl:when test="/*[local-name()='StrategicPlan']">
             <xsl:call-template name="render-stratml"/>
@@ -60,7 +29,7 @@
           </xsl:when>
 
           <xsl:otherwise>
-            <h1>Unknown Document Type</h1>
+            <h2>Unknown Document Type</h2>
           </xsl:otherwise>
         </xsl:choose>
 
@@ -68,200 +37,192 @@
     </html>
   </xsl:template>
 
-  <!-- ====================== -->
-  <!-- STRATML RENDERING      -->
-  <!-- ====================== -->
+  <!-- ========================================================= -->
+  <!-- RENDER STRATML STRATEGIC PLAN                             -->
+  <!-- ========================================================= -->
+    
   <xsl:template name="render-stratml">
     <h1>Strategic Plan</h1>
 
-    <!-- Header -->
     <div class="section">
       <h2>Header</h2>
       <table>
-        <tr><th>Field</th><th>Value</th></tr>
-        <tr><td>Title</td><td><xsl:value-of select="/stratml:StrategicPlan/stratml:Header/stratml:Title"/></td></tr>
-        <tr><td>Version</td><td><xsl:value-of select="/stratml:StrategicPlan/stratml:Header/stratml:Version"/></td></tr>
-        <tr><td>Date</td><td><xsl:value-of select="/stratml:StrategicPlan/stratml:Header/stratml:Date"/></td></tr>
-        <tr><td>Description</td><td><xsl:value-of select="/stratml:StrategicPlan/stratml:Header/stratml:Description"/></td></tr>
+        <tr><th>Title</th><td><xsl:call-template name="linkify-text"><xsl:with-param name="text" select="//stratml:Title"/></xsl:call-template></td></tr>
+        <tr><th>Identifier</th><td><xsl:call-template name="linkify-text"><xsl:with-param name="text" select="//stratml:Identifier"/></xsl:call-template></td></tr>
+        <tr><th>Description</th><td><xsl:call-template name="linkify-text"><xsl:with-param name="text" select="//stratml:Description"/></xsl:call-template></td></tr>
+        <tr><th>Version</th><td><xsl:call-template name="linkify-text"><xsl:with-param name="text" select="//stratml:Version"/></xsl:call-template></td></tr>
       </table>
     </div>
 
-    <!-- Vision -->
-    <div class="section">
-      <h2>Vision</h2>
-      <p><xsl:value-of select="/stratml:StrategicPlan/stratml:Vision"/></p>
-    </div>
-
-    <!-- Mission -->
-    <div class="section">
-      <h2>Mission</h2>
-      <p><xsl:value-of select="/stratml:StrategicPlan/stratml:Mission"/></p>
-    </div>
-
-    <!-- Values -->
-    <div class="section">
-      <h2>Values</h2>
-      <ul>
-        <xsl:for-each select="/stratml:StrategicPlan/stratml:Values/stratml:Value">
-          <li><xsl:value-of select="."/></li>
-        </xsl:for-each>
-      </ul>
-    </div>
-
-    <!-- Stakeholders -->
-    <div class="section">
-      <h2>Stakeholders</h2>
-      <ul>
-        <xsl:for-each select="/stratml:StrategicPlan/stratml:Stakeholders/stratml:Stakeholder">
-          <li><xsl:value-of select="stratml:Name"/></li>
-        </xsl:for-each>
-      </ul>
-    </div>
-
-    <!-- Goals & Objectives -->
-    <div class="section">
-      <h2>Goals</h2>
-
-      <xsl:for-each select="/stratml:StrategicPlan/stratml:Goals/stratml:Goal">
+    <h2>Goals</h2>
+    <xsl:for-each select="//stratml:Goal">
+      <div class="section">
         <h3>
-          <xsl:value-of select="stratml:Identifier"/> – 
-          <xsl:value-of select="stratml:Name"/>
+          <xsl:call-template name="linkify-text">
+            <xsl:with-param name="text" select="stratml:Name"/>
+          </xsl:call-template>
         </h3>
 
-        <xsl:for-each select="stratml:Objectives/stratml:Objective">
-          <table>
-            <tr><th colspan="2"><xsl:value-of select="stratml:Identifier"/> – <xsl:value-of select="stratml:Name"/></th></tr>
-            <tr><td>Description</td><td><xsl:value-of select="stratml:Description"/></td></tr>
+        <p>
+          <xsl:call-template name="linkify-text">
+            <xsl:with-param name="text" select="stratml:Description"/>
+          </xsl:call-template>
+        </p>
 
-            <tr>
-              <td>Performance Indicators</td>
-              <td>
-                <ul>
-                  <xsl:for-each select="stratml:PerformanceIndicators/stratml:PerformanceIndicator">
-                    <li><xsl:value-of select="."/></li>
-                  </xsl:for-each>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </xsl:for-each>
+        <h4>Objectives</h4>
+        <ul>
+          <xsl:for-each select="stratml:Objective">
+            <li>
+              <b>
+                <xsl:call-template name="linkify-text">
+                  <xsl:with-param name="text" select="stratml:Name"/>
+                </xsl:call-template>
+              </b>
 
-      </xsl:for-each>
-    </div>
+              <xsl:call-template name="linkify-text">
+                <xsl:with-param name="text" select="stratml:Description"/>
+              </xsl:call-template>
+            </li>
+          </xsl:for-each>
+        </ul>
+      </div>
+    </xsl:for-each>
 
   </xsl:template>
 
-  <!-- ====================== -->
-  <!-- DATA DICTIONARY FORMAT -->
-  <!-- ====================== -->
+  <!-- ========================================================= -->
+  <!-- RENDER DATA DICTIONARY                                    -->
+  <!-- ========================================================= -->
+    
   <xsl:template name="render-dictionary">
-    <h1>Unified PID System – Data Dictionary</h1>
+    <h1>Data Dictionary</h1>
 
-    <!-- Metadata Section -->
     <div class="section">
       <h2>Metadata</h2>
       <table>
-        <tr><th>Field</th><th>Value</th></tr>
-        <tr><td>Title</td><td><xsl:value-of select="/dd:DataDictionary/dd:Metadata/dd:Title"/></td></tr>
-        <tr><td>Version</td><td><xsl:value-of select="/dd:DataDictionary/dd:Metadata/dd:Version"/></td></tr>
-        <tr><td>Date</td><td><xsl:value-of select="/dd:DataDictionary/dd:Metadata/dd:Date"/></td></tr>
-        <tr><td>Description</td><td><xsl:value-of select="/dd:DataDictionary/dd:Metadata/dd:Description"/></td></tr>
+        <tr>
+          <th>Title</th>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="//dd:Metadata/dd:Title"/>
+            </xsl:call-template>
+          </td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="//dd:Metadata/dd:Description"/>
+            </xsl:call-template>
+          </td>
+        </tr>
       </table>
     </div>
 
-    <!-- Fields Section -->
-    <div class="section">
-      <h2>Fields</h2>
+    <h2>Fields</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Example</th>
+      </tr>
 
-      <xsl:for-each select="/dd:DataDictionary/dd:Fields/dd:Field">
-        <table>
-          <tr><th colspan="2"><xsl:value-of select="dd:Name"/></th></tr>
-
-          <tr><td>Definition</td><td><xsl:value-of select="dd:Definition"/></td></tr>
-
-          <xsl:if test="dd:AlternateName">
-            <tr><td>Alternate Name</td><td><xsl:value-of select="dd:AlternateName"/></td></tr>
-          </xsl:if>
-
-          <tr><td>Format</td><td><xsl:value-of select="dd:Format"/></td></tr>
-          <tr><td>Required</td><td><xsl:value-of select="dd:Required"/></td></tr>
-
-          <xsl:if test="dd:Example">
-            <tr><td>Example</td><td><xsl:value-of select="dd:Example"/></td></tr>
-          </xsl:if>
-        </table>
+      <xsl:for-each select="//dd:Field">
+        <tr>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="dd:Name"/>
+            </xsl:call-template>
+          </td>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="dd:Description"/>
+            </xsl:call-template>
+          </td>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="dd:Type"/>
+            </xsl:call-template>
+          </td>
+          <td>
+            <xsl:call-template name="linkify-text">
+              <xsl:with-param name="text" select="dd:Example"/>
+            </xsl:call-template>
+          </td>
+        </tr>
       </xsl:for-each>
-
-    </div>
+    </table>
   </xsl:template>
-  <!-- Adding some experimental functionality to render URLs as active links -->
-    <xsl:template match="text()">
-      <xsl:call-template name="linkify">
-        <xsl:with-param name="text" select="." />
-      </xsl:call-template>
-    </xsl:template>
+
+  <!-- ========================================================= -->
+  <!-- URL AUTOLINKING TEMPLATE                                  -->
+  <!-- ========================================================= -->
     
-    <!-- Recursive URL detection & hyperlinking -->
-    <xsl:template name="linkify">
-      <xsl:param name="text"/>
-    
-      <!-- Detect first http:// or https:// occurrence -->
-      <xsl:variable name="http-pos" select="string-length(substring-before($text, 'http://')) + 1"/>
-      <xsl:variable name="https-pos" select="string-length(substring-before($text, 'https://')) + 1"/>
-    
-      <!-- Choose the earliest URL occurrence -->
-      <xsl:variable name="pos">
+  <xsl:template name="linkify-text">
+    <xsl:param name="text"/>
+
+    <!-- find locations of "http://" & "https://" -->
+    <xsl:variable name="http-pos"  select="string-length(substring-before($text, 'http://')) + 1"/>
+    <xsl:variable name="https-pos" select="string-length(substring-before($text, 'https://')) + 1"/>
+
+    <!-- pick the earliest, valid URL -->
+    <xsl:variable name="url-pos">
+      <xsl:choose>
+        <xsl:when test="contains($text,'http://') and (not(contains($text,'https://')) or $http-pos &lt; $https-pos)">
+          <xsl:value-of select="$http-pos"/>
+        </xsl:when>
+        <xsl:when test="contains($text,'https://')">
+          <xsl:value-of select="$https-pos"/>
+        </xsl:when>
+        <xsl:otherwise>0</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!-- If no URL, just output text -->
+    <xsl:if test="$url-pos = 0">
+      <xsl:value-of select="$text"/>
+    </xsl:if>
+
+    <!-- URL exists -->
+    <xsl:if test="$url-pos &gt; 0">
+      <!-- output before URL -->
+      <xsl:value-of select="substring($text, 1, $url-pos - 1)"/>
+
+      <!-- remaining text -->
+      <xsl:variable name="rest" select="substring($text, $url-pos)"/>
+
+      <!-- extract URL until space -->
+      <xsl:variable name="url">
         <xsl:choose>
-          <xsl:when test="contains($text, 'http://') and contains($text, 'https://')">
-            <xsl:choose>
-              <xsl:when test="$http-pos &lt; $https-pos"><xsl:value-of select="$http-pos"/></xsl:when>
-              <xsl:otherwise><xsl:value-of select="$https-pos"/></xsl:otherwise>
-            </xsl:choose>
+          <xsl:when test="contains($rest,' ')">
+            <xsl:value-of select="substring($rest, 1, string-length(substring-before($rest,' ')))"/>
           </xsl:when>
-    
-          <xsl:when test="contains($text, 'http://')"><xsl:value-of select="$http-pos"/></xsl:when>
-          <xsl:when test="contains($text, 'https://')"><xsl:value-of select="$https-pos"/></xsl:when>
-    
-          <xsl:otherwise>0</xsl:otherwise>
+          <xsl:otherwise><xsl:value-of select="$rest"/></xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-    
-      <!-- If no URL found, output text normally -->
-      <xsl:if test="$pos = 0">
-        <xsl:value-of select="$text"/>
-      </xsl:if>
-    
-      <!-- Otherwise, output text up to the URL, then the URL as a link -->
-      <xsl:if test="$pos &gt; 0">
-        <!-- Output text before URL -->
-        <xsl:value-of select="substring($text, 1, $pos - 1)"/>
-    
-        <!-- Extract URL up to next space or end -->
-        <xsl:variable name="rest" select="substring($text, $pos)"/>
-        <xsl:variable name="url-end">
-          <xsl:choose>
-            <xsl:when test="contains($rest, ' ')">
-              <xsl:value-of select="string-length(substring-before($rest, ' '))"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="string-length($rest)"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="url" select="substring($rest, 1, $url-end)"/>
-    
-        <!-- Output clickable link -->
-        <a href="{$url}" target="_blank">
-          <xsl:value-of select="$url"/>
-        </a>
-    
-        <!-- Recursively process remaining text -->
-        <xsl:variable name="remaining" select="substring($rest, $url-end + 1)"/>
-        <xsl:call-template name="linkify">
-          <xsl:with-param name="text" select="$remaining"/>
-        </xsl:call-template>
-      </xsl:if>
-    
-    </xsl:template>
+
+      <!-- clickable hyperlink -->
+      <a href="{$url}" target="_blank" rel="noopener noreferrer">
+        <xsl:value-of select="$url"/>
+      </a>
+
+      <!-- remainder after URL -->
+      <xsl:variable name="remaining">
+        <xsl:choose>
+          <xsl:when test="contains($rest,' ')">
+            <xsl:value-of select="substring-after($rest,' ')"/>
+          </xsl:when>
+          <xsl:otherwise></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <!-- recurse -->
+      <xsl:call-template name="linkify-text">
+        <xsl:with-param name="text" select="$remaining"/>
+      </xsl:call-template>
+    </xsl:if>
+
+  </xsl:template>
 
 </xsl:stylesheet>
