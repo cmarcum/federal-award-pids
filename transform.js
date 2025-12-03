@@ -1,7 +1,8 @@
 async function loadXML(url) {
   const response = await fetch(url);
   const text = await response.text();
-  return new DOMParser().parseFromString(text, "application/xml");
+  const parser = new DOMParser();
+  return parser.parseFromString(text, "application/xml");
 }
 
 async function transform() {
@@ -14,12 +15,10 @@ async function transform() {
   const processor = new XSLTProcessor();
   processor.importStylesheet(xsl);
 
-  // IMPORTANT FIX: transform to *document*, then serialize to HTML
-  const doc = processor.transformToDocument(xml);
-  const html = new XMLSerializer().serializeToString(doc);
-
+  const result = processor.transformToFragment(xml, document);
   const container = document.getElementById("content");
-  container.innerHTML = html;
+  container.innerHTML = "";
+  container.appendChild(result);
 }
 
 document.addEventListener("DOMContentLoaded", transform);
