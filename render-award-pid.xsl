@@ -194,5 +194,74 @@
 
     </div>
   </xsl:template>
+  <!-- Adding some experimental functionality to render URLs as active links -->
+    <xsl:template match="text()">
+      <xsl:call-template name="linkify">
+        <xsl:with-param name="text" select="." />
+      </xsl:call-template>
+    </xsl:template>
+    
+    <!-- Recursive URL detection & hyperlinking -->
+    <xsl:template name="linkify">
+      <xsl:param name="text"/>
+    
+      <!-- Detect first http:// or https:// occurrence -->
+      <xsl:variable name="http-pos" select="string-length(substring-before($text, 'http://')) + 1"/>
+      <xsl:variable name="https-pos" select="string-length(substring-before($text, 'https://')) + 1"/>
+    
+      <!-- Choose the earliest URL occurrence -->
+      <xsl:variable name="pos">
+        <xsl:choose>
+          <xsl:when test="contains($text, 'http://') and contains($text, 'https://')">
+            <xsl:choose>
+              <xsl:when test="$http-pos &lt; $https-pos"><xsl:value-of select="$http-pos"/></xsl:when>
+              <xsl:otherwise><xsl:value-of select="$https-pos"/></xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+    
+          <xsl:when test="contains($text, 'http://')"><xsl:value-of select="$http-pos"/></xsl:when>
+          <xsl:when test="contains($text, 'https://')"><xsl:value-of select="$https-pos"/></xsl:when>
+    
+          <xsl:otherwise>0</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+    
+      <!-- If no URL found, output text normally -->
+      <xsl:if test="$pos = 0">
+        <xsl:value-of select="$text"/>
+      </xsl:if>
+    
+      <!-- Otherwise, output text up to the URL, then the URL as a link -->
+      <xsl:if test="$pos &gt; 0">
+        <!-- Output text before URL -->
+        <xsl:value-of select="substring($text, 1, $pos - 1)"/>
+    
+        <!-- Extract URL up to next space or end -->
+        <xsl:variable name="rest" select="substring($text, $pos)"/>
+        <xsl:variable name="url-end">
+          <xsl:choose>
+            <xsl:when test="contains($rest, ' ')">
+              <xsl:value-of select="string-length(substring-before($rest, ' '))"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="string-length($rest)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="url" select="substring($rest, 1, $url-end)"/>
+    
+        <!-- Output clickable link -->
+        <a href="{$url}" target="_blank">
+          <xsl:value-of select="$url"/>
+        </a>
+    
+        <!-- Recursively process remaining text -->
+        <xsl:variable name="remaining" select="substring($rest, $url-end + 1)"/>
+        <xsl:call-template name="linkify">
+          <xsl:with-param name="text" select="$remaining"/>
+        </xsl:call-template>
+      </xsl:if>
+    
+    </xsl:template>
 
 </xsl:stylesheet>
