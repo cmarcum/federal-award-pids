@@ -1,1 +1,224 @@
-<DataDictionary xmlns='http://awards.gov/schema/datadictionary'><Metadata><Title>Data Dictionary</Title></Metadata></DataDictionary>
+<?xml version="1.0" encoding="UTF-8"?>
+<DataDictionary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://awards.gov/schema/datadictionary"
+                xsi:schemaLocation="http://awards.gov/schema/datadictionary DataDictionary.xsd">
+
+  <Metadata>
+    <Identifier>urn:uuid:fed-rd-award-pid-dictionary-1.0</Identifier>
+    <Title>Data Dictionary for the Unified Federal R&amp;D Award Persistent Identifier System</Title>
+    <Version>1.0</Version>
+    <Date>2025-12-01</Date>
+    <Description>
+      Defines the metadata elements for a unified federal R&amp;D Award PID system providing 
+      persistent, globally unique, resolvable URLs for all federal research and development awards.
+    </Description>
+  </Metadata>
+
+  <Fields>
+
+    <!-- CORE IDENTIFICATION FIELDS -->
+
+    <Field>
+      <Name>award_pid</Name>
+      <Definition>The persistent, globally unique, resolvable URL assigned to the award.</Definition>
+      <Format>URI</Format>
+      <Required>true</Required>
+      <Example>https://awards.gov/award/123e4567-e89b-12d3-a456-426614174000</Example>
+    </Field>
+
+    <Field>
+      <Name>award_uuid</Name>
+      <Definition>Internal UUID used for system-level uniqueness and canonical URL creation.</Definition>
+      <Format>UUID v4</Format>
+      <Required>true</Required>
+      <Example>123e4567-e89b-12d3-a456-426614174000</Example>
+    </Field>
+
+    <Field>
+      <Name>federal_award_identification_number</Name>
+      <AlternateName>FAIN</AlternateName>
+      <Definition>Agency-submitted award identifier used for financial tracking and USAspending reporting.</Definition>
+      <Format>string</Format>
+      <Required>false</Required>
+      <Example>R01HL123456</Example>
+    </Field>
+
+    <Field>
+      <Name>agency_award_number</Name>
+      <Definition>The internal award number used by the funding agency.</Definition>
+      <Format>string</Format>
+      <Required>false</Required>
+      <Example>DOE-AC02-05CH11231</Example>
+    </Field>
+
+    <Field>
+      <Name>san_number</Name>
+      <Definition>System Award Number or agency-specific structured award identifier.</Definition>
+      <Format>string</Format>
+      <Required>false</Required>
+      <Example>SAN-2022-001234</Example>
+    </Field>
+
+    <!-- TITLE & ABSTRACT -->
+
+    <Field>
+      <Name>title</Name>
+      <Definition>Official title of the research award.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+      <Example>Genomic Approaches to Understanding Disease Mechanisms</Example>
+    </Field>
+
+    <Field>
+      <Name>abstract</Name>
+      <Definition>Summary or project description provided by the awarding agency.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+    </Field>
+
+    <!-- FUNDING INFORMATION -->
+
+    <Field>
+      <Name>funding_agency</Name>
+      <Definition>Name of the federal agency providing funding for the award.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+      <Example>National Institutes of Health</Example>
+    </Field>
+
+    <Field>
+      <Name>funding_agency_identifier</Name>
+      <Definition>Unique identifier for the funding agency.</Definition>
+      <Format>string (e.g., ROR or agency code)</Format>
+      <Required>true</Required>
+      <Example>https://ror.org/01cwqze88</Example>
+    </Field>
+
+    <Field>
+      <Name>funding_amount</Name>
+      <Definition>Total obligated funding amount.</Definition>
+      <Format>decimal</Format>
+      <Required>false</Required>
+      <Example>1500000.00</Example>
+    </Field>
+
+    <!-- DATES -->
+
+    <Field>
+      <Name>start_date</Name>
+      <Definition>Official project start date.</Definition>
+      <Format>YYYY-MM-DD</Format>
+      <Required>true</Required>
+    </Field>
+
+    <Field>
+      <Name>end_date</Name>
+      <Definition>Official project end date.</Definition>
+      <Format>YYYY-MM-DD</Format>
+      <Required>true</Required>
+    </Field>
+
+    <!-- INVESTIGATORS -->
+
+    <Field>
+      <Name>principal_investigator_name</Name>
+      <Definition>Full name of the principal investigator.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+      <Example>Jane Q. Researcher</Example>
+    </Field>
+
+    <Field>
+      <Name>principal_investigator_orcid</Name>
+      <Definition>ORCID identifier for the PI.</Definition>
+      <Format>URI (ORCID)</Format>
+      <Required>false</Required>
+      <Example>https://orcid.org/0000-0002-1825-0097</Example>
+    </Field>
+
+    <Field>
+      <Name>co_investigator</Name>
+      <Definition>Information on project co-investigators.</Definition>
+      <Format>array of objects (name, ORCID, role)</Format>
+      <Required>false</Required>
+    </Field>
+
+    <!-- ORGANIZATIONS -->
+
+    <Field>
+      <Name>performing_organization_name</Name>
+      <Definition>Institution or organization carrying out the research.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+    </Field>
+
+    <Field>
+      <Name>performing_organization_ror</Name>
+      <Definition>Research Organization Registry (ROR) identifier.</Definition>
+      <Format>URI</Format>
+      <Required>false</Required>
+      <Example>https://ror.org/05xpvk416</Example>
+    </Field>
+
+    <!-- OUTPUTS -->
+
+    <Field>
+      <Name>related_research_outputs</Name>
+      <Definition>PIDs for related publications, datasets, software, and other outputs.</Definition>
+      <Format>array of URIs</Format>
+      <Required>false</Required>
+      <Example>https://doi.org/10.1234/abcd.56789</Example>
+    </Field>
+
+    <!-- PARENT/CHILD AWARD RELATIONSHIPS -->
+
+    <Field>
+      <Name>parent_award_pid</Name>
+      <Definition>PID for the parent award when the record represents a subaward.</Definition>
+      <Format>URI</Format>
+      <Required>false</Required>
+    </Field>
+
+    <Field>
+      <Name>subaward_pids</Name>
+      <Definition>List of PIDs representing subawards associated with this award.</Definition>
+      <Format>array of URIs</Format>
+      <Required>false</Required>
+    </Field>
+
+    <!-- MULTI-FUNDER & COLLABORATION -->
+
+    <Field>
+      <Name>co_funding_agencies</Name>
+      <Definition>Other federal agencies contributing funding support.</Definition>
+      <Format>array of objects (agency_name, agency_identifier)</Format>
+      <Required>false</Required>
+    </Field>
+
+    <!-- TECHNICAL METADATA -->
+
+    <Field>
+      <Name>landing_page_url</Name>
+      <Definition>Human-readable landing page associated with the award PID.</Definition>
+      <Format>URI</Format>
+      <Required>true</Required>
+    </Field>
+
+    <Field>
+      <Name>metadata_last_updated</Name>
+      <Definition>Date of the most recent metadata update.</Definition>
+      <Format>YYYY-MM-DD</Format>
+      <Required>true</Required>
+    </Field>
+
+    <Field>
+      <Name>metadata_version</Name>
+      <Definition>Version number of the metadata record.</Definition>
+      <Format>string</Format>
+      <Required>true</Required>
+      <Example>1.0</Example>
+    </Field>
+
+  </Fields>
+
+</DataDictionary>
